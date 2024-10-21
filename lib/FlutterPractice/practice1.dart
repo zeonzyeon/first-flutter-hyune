@@ -1,4 +1,3 @@
-// 사용자 인터페이스 아키텍쳐
 import 'package:flutter/material.dart';
 
 void main() {
