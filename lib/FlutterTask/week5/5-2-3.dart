@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
 
           body: Column(children: [
             IntrinsicWidth(
+              // IntrinsicWidth 위젯은 자식 위젯들의 최대 너비에 맞춰서 너비를 조정
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
               ), // Column
             ), // IntrinsicWidth
             ConstrainedBox(
+                // ConstrainedBox**는 자식 위젯의 크기를 제한하는 위젯
                 constraints: BoxConstraints(
                   minWidth: 300,
                   maxHeight: 50,
