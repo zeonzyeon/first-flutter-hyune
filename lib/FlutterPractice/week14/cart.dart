@@ -18,8 +18,9 @@ class Product {
   final String name;
   final String category;
   final int price;
+  final String image;
 
-  Product(this.name, this.category, this.price);
+  Product(this.name, this.category, this.price, this.image);
 }
 
 class ProductListScreen extends StatefulWidget {
@@ -35,14 +36,17 @@ class _ProductListScreenState extends State<ProductListScreen> {
   static Map<Product, int> cart = {};
 
   List<Product> allProducts = [
-    Product("사과", "식품", 1000),
-    Product("바나나", "식품", 2000),
-    Product("포도", "식품", 3000),
-    Product("딸기", "식품", 3000),
-    Product("세제", "생활", 10000),
-    Product("휴지", "생활", 10000),
-    Product("전자레인지", "가전", 100000),
-    Product("TV", "가전", 300000),
+    Product("사과", "식품", 1000, "images/apple.png"),
+    Product("바나나", "식품", 2000, "images/banana.png"),
+    Product("포도", "식품", 3000, "images/grape.png"),
+    Product("딸기", "식품", 3000, "images/strawberry.png"),
+    Product("세제", "생활", 10000, "images/detergent.png"),
+    Product("휴지", "생활", 10000, "images/tissue.png"),
+    Product("전자레인지", "가전", 100000, "images/microwave.png"),
+    Product("TV", "가전", 300000, "images/TV.png"),
+    Product("엔진오일", "자동차", 50000, "images/engine_oil.png"),
+    Product("타이어", "자동차", 150000, "images/tire.png"),
+    Product("블랙박스", "자동차", 200000, "images/dash_cam.png"),
   ];
 
   void _addToCart(Product product) {
@@ -80,7 +84,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 MaterialPageRoute(
                   builder: (context) => CartScreen(cart: cart),
                 ),
-              );
+              ).then((_) {
+                setState(() {});
+              });
             },
           ),
         ],
@@ -137,6 +143,17 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 );
               },
             ),
+            ListTile(
+              title: Text("자동차"),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductListScreen(category: "자동차"),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -144,6 +161,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
         itemCount: products.length,
         itemBuilder: (context, index) {
           return ListTile(
+            leading: Image.asset(products[index].image, width: 50),
             title: Text(products[index].name),
             subtitle: Text("${products[index].price} 원"),
             trailing: IconButton(
@@ -152,6 +170,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 _addToCart(products[index]);
               },
             ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ProductDetailScreen(product: products[index]),
+                ),
+              );
+            },
           );
         },
       ),
@@ -247,6 +274,9 @@ class _CartScreenState extends State<CartScreen> {
                           actions: [
                             TextButton(
                               onPressed: () {
+                                setState(() {
+                                  widget.cart.clear();
+                                });
                                 Navigator.pop(context);
                                 Navigator.pop(context);
                               },
@@ -261,6 +291,39 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ],
             ),
+    );
+  }
+}
+
+class ProductDetailScreen extends StatelessWidget {
+  final Product product;
+
+  ProductDetailScreen({required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(product.name),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(product.image, width: 150),
+            SizedBox(height: 16),
+            Text(
+              product.name,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              "${product.price} 원",
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
