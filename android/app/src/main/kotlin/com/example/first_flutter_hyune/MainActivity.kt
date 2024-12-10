@@ -1,4 +1,4 @@
-package com.example.first_flutter_hyune
+package com.example.first_flutter_hyune.com.example.first_flutter_hyune
 
 import android.util.Log
 import io.flutter.embedding.android.FlutterActivity
